@@ -1,0 +1,65 @@
+{
+  "Comment": "Order Processing Flow",
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:000000000000:function:validate_order",
+      "Next": "ProcessOrder",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "Fail"
+        }
+      ]
+    },
+    "ProcessOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:000000000000:function:process_order",
+      "Next": "SaveToDynamoDB",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "Fail"
+        }
+      ]
+    },
+    "SaveToDynamoDB": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:000000000000:function:save_to_dynamodb",
+      "Next": "CheckForHighValueOrder",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "Fail"
+        }
+      ]
+    },
+    "CheckForHighValueOrder": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.amount",
+          "NumericGreaterThan": 1000,
+          "Next": "SendHighValueAlert"
+        }
+      ],
+      "Default": "Success"
+    },
+    "SendHighValueAlert": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:eu-west-1:000000000000:function:send_high_value_alert",
+      "End": true
+    },
+    "Success": {
+      "Type": "Pass",
+      "Result": "Order processed successfully",
+      "End": true
+    },
+    "Fail": {
+      "Type": "Fail",
+      "Error": "OrderProcessingFailed",
+      "Cause": "An error occurred during the order processing"
+    }
+  }
+}

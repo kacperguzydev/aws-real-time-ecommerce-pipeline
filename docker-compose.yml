@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack:4.6.0
+    container_name: localstack
+    ports:
+      - "4566:4566"   # główny port LocalStack
+    environment:
+      - SERVICES=apigateway,s3,lambda,dynamodb,kinesis,sns,sqs,cloudwatch,secretsmanager,stepfunctions
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "./.localstack:/var/lib/localstack"  # dane lokalne
+      - "/var/run/docker.sock:/var/run/docker.sock"
