@@ -27,3 +27,11 @@ This project simulates an **e-commerce order processing system** using AWS servi
 ```bash
 git clone https://github.com/kacperguzydev/ecommerce-order-processing.git
 cd ecommerce-order-processing
+### 2️⃣ Install required packages
+```bash
+python3 -m venv .venv
+
+```bash
+pip install -r requirements.txt
+
+### 3️⃣ Install Docker and LocalStack
