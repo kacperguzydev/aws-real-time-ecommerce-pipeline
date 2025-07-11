@@ -27,11 +27,16 @@ This project simulates an **e-commerce order processing system** using AWS servi
 ```bash
 git clone https://github.com/kacperguzydev/ecommerce-order-processing.git
 cd ecommerce-order-processing
+```
 ### 2️⃣ Install required packages
 ```bash
 python3 -m venv .venv
-
+```
 ```bash
 pip install -r requirements.txt
-
+```
 ### 3️⃣ Install Docker and LocalStack
+To run LocalStack locally, you need Docker installed on your machine. If you don't have it, follow the official Docker installation guide. then install docker-compose.yml
+```bash
+docker-compose up
+```
